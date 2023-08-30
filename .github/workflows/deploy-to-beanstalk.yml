@@ -77,4 +77,4 @@ jobs:
         application_name: ${{inputs.APPLICATION_NAME}}
         environment_name: ${{inputs.ENVIRONMENT_NAME}}
         version_label: ${{inputs.VERSION_LABEL}}
-        region: env.AWS_REGION
+        region: ${{env.AWS_REGION}}
