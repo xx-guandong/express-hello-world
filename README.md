@@ -43,8 +43,7 @@ Docs: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-do
 
 2. Version 2
 Docs: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_docker_v2config.html
-```
-```
+
 ### Optional: Define Environment Variables
 Doc: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-softwaresettings.html
 1. Dockerrun.aws.json v1: on AWS portal: Environment -> Configuration -> Updates, monitoring, and logging -> Environment properties.
