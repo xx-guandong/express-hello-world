@@ -12,10 +12,6 @@ on:
                 description: 'ECR repo'
                 required: true
                 default: 'express-hello-world'
-            APPLICATION_NAME:
-                description: 'eb app name'
-                default: 'express-eample'
-                required: true
             ENVIRONMENT_NAME:
                 description: 'eb env name'
                 default: 'Express-eample-env-1'
