@@ -1,0 +1,86 @@
+# This workflow will build and push a new container image to Amazon ECR, 
+# when there is a push to the "main" branch.
+
+
+
+name: Deploy to AWS Beanstalk
+
+on: 
+    workflow_dispatch:
+        inputs:
+            ECR_REPOSITORY:
+                description: 'ECR repo'
+                required: true
+                default: 'express-hello-world'
+            APPLICATION_NAME:
+                description: 'eb app name'
+                default: 'express-eample'
+                required: true
+            ENVIRONMENT_NAME:
+                description: 'eb env name'
+                default: 'Express-eample-env-1'
+                required: true
+            VERSION_LABEL:
+                description: 'eb deploy version label'
+                default: 'express-eample-version-1'
+                required: true
+            
+
+
+
+
+env:
+    AWS_REGION: 'us-west-2'
+
+
+
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Check Docker Version
+      run: docker --version
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    - name: Build, tag, and push image to Amazon ECR
+      id: build-image
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: latest #${{ github.sha }}
+      run: |
+        # Build a docker container and
+        # push it to ECR so that it can
+        # be deployed to ECS.
+        docker build . -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
+
+    - name: Deploy to EB
+      uses: einaregilsson/beanstalk-deploy@v21
+      with:
+        aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        application_name: ${{inputs.APPLICATION_NAME}}
+        environment_name: ${{inputs.ENVIRONMENT_NAME}}
+        version_label: ${{inputs.VERSION_LABEL}}
+        region: env.AWS_REGION

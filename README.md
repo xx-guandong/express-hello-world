@@ -51,3 +51,8 @@ Doc: https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environments-cfg-sof
 https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/single-container-docker-configuration.html
 2. For v2 version, need to run in multiple container env which is ECS platform. -> environment
 https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/create_deploy_docker_v2config.html#create_deploy_docker_v2config_dockerrun
+
+
+## Connect with Github action
+Use github action to replace manually create docker image, push and deploy on Beanstalk
+Refer to .github/workflows/deploy-to-beanstalk

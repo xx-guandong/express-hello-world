@@ -11,6 +11,10 @@ app.get('/env', (req, res) => {
   res.send(JSON.stringify(process.env))
 })
 
+app.get('/env2', (req, res) => {
+  res.send(JSON.stringify(process.env))
+})
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
