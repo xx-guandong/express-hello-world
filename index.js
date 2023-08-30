@@ -11,7 +11,7 @@ app.get('/env', (req, res) => {
   res.send(JSON.stringify(process.env))
 })
 
-app.get('finish', (req,res) => {
+app.get('/finish', (req,res) => {
   res.send("Done!")
 })
 
