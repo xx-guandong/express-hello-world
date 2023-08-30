@@ -11,12 +11,8 @@ app.get('/env', (req, res) => {
   res.send(JSON.stringify(process.env))
 })
 
-app.get('/env2', (req, res) => {
-  res.send(JSON.stringify(process.env))
-})
-
-app.get('/env3', (req, res) => {
-  res.send(JSON.stringify(process.env))
+app.get('finish', (req,res) => {
+  res.send("Done!")
 })
 
 app.listen(port, () => {
