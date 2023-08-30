@@ -89,7 +89,7 @@ jobs:
         environment_name: ${{inputs.ENVIRONMENT_NAME}}
         version_label: ${{inputs.VERSION_LABEL}}
         region: ${{env.AWS_REGION}}
-      run:
+      run: |
         aws elasticbeanstalk update-environment --environment-name $environment_name --version-label $version_label 
         aws elasticbeanstalk wait environment-updated
 
