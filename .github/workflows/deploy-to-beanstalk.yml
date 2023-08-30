@@ -69,7 +69,8 @@ jobs:
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "::set-output name=image::$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
         
-  deploy:
+  deploy-eb:
+    needs: build-image
     name: Deploy to EB
     runs-on: ubuntu-latest
     environment: production
@@ -81,9 +82,7 @@ jobs:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ env.AWS_REGION }}
-    - name: Install aws eb cli   
-      run: 
-        pip install awsebcli --upgrade --user
+
     - name: Deploy 
       env:
         application_name: ${{inputs.APPLICATION_NAME}}
@@ -91,7 +90,7 @@ jobs:
         version_label: ${{inputs.VERSION_LABEL}}
         region: ${{env.AWS_REGION}}
       run:
-        eb deploy $environment_name -r $region -l $version_label 
+        aws elasticbeanstalk update-environment --environment-name $environment_name --version-label $version_label 
 
 
     
